@@ -17,7 +17,7 @@ setup(
     keywords="kwargs",
     url="https://github.com/mfalesni/python-kwargify",
     py_modules=["kwargify"],
-    install_requires=[],
+    install_requires=["functools32"],
     classifiers=[
         "Topic :: Utilities",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",

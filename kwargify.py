@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import inspect
 
+from functools32 import wraps
+
 
 def kwargify(function):
     _method = hasattr(function, "im_func") or type(function).__name__ == "method"
@@ -15,6 +17,7 @@ def kwargify(function):
         for key, value in zip(_args[-len(f_defaults):], f_defaults):
             _defaults[key] = value
 
+    @wraps(function)
     def wrapper(*args, **kwargs):
         pass_args = []
         if len(args) > len(_args):
@@ -31,5 +34,4 @@ def kwargify(function):
             else:
                 raise TypeError("Required parameter {} not found in the context!".format(arg))
         return function(*pass_args)
-    wrapper.__wrapped__ = function
     return wrapper

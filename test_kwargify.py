@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import pytest
+
 from kwargify import kwargify
 
 
@@ -139,9 +140,24 @@ class TestKwargifyMethod(object):
         assert kwargify(o.withdefault)(1, b=2)["b"] == 2
 
 
-def test_wrapped():
-    def f():
-        pass
+def test_wrapped_method():
+    # method wrapping should work the same as function wrapping,
+    # so this only does a minimum of sanity checks
+    class Foo(object):
+        @kwargify
+        def bar(self, x, y, z):
+            return x, y, z
 
-    wrapped_f = kwargify(f)
-    assert wrapped_f.__wrapped__ is f
+    f = Foo()
+    args = 1, 2, 3
+
+    # method fails correctly with incorrect args, just like a function does
+    with pytest.raises(TypeError):
+        f.bar(**dict(zip(('x', 'y'), args)))
+
+    # This should not explode (self is handled correctly)
+    ret = f.bar(**dict(zip(('x', 'y', 'z'), args)))
+
+    # Values should be returned in the same way that they were given
+    assert ret == args
+
