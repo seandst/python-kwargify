@@ -137,3 +137,11 @@ class TestKwargifyMethod(object):
 
     def test_override_default_with_kwarg(self, o):
         assert kwargify(o.withdefault)(1, b=2)["b"] == 2
+
+
+def test_wrapped():
+    def f():
+        pass
+
+    wrapped_f = kwargify(f)
+    assert wrapped_f.__wrapped__ is f
